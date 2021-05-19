@@ -7,6 +7,10 @@
 import time
 import array
 import json
+import sys
+if sys.version_info[0] != 3:
+    print("This script requires Python version 3")
+    sys.exit(1)
 
 # -----------------------
 # Main Script
@@ -119,13 +123,16 @@ def parseData():
 		for y in range(0,750):
 			jsObj["dataScreen"][x]["values"][y] = dataScreen[x][y*2] + 256 * dataBuff[x][y*2+1]
 
-# Main routine
-filename = input('filename:')
-#if filename.isnumeric():
-#	filename = str(filename)
-getBinaryData(filename + '.wav')
-parseHeader()
-parseMeasures()
-parseData()
-saveAsJson(filename + '.json', json_indent)
-print("finished")
+def wav2json(inputFile, outputFile):
+        getBinaryData(inputFile)
+        parseHeader()
+        parseMeasures()
+        parseData()
+        saveAsJson(outputFile, json_indent)
+                
+if __name__ == "__main__":
+        filename = input('filename:')
+        #if filename.isnumeric():
+        #	filename = str(filename)
+        wav2json(filename + '.wav', filename + '.json')
+        print("finished")
